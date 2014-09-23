@@ -1,0 +1,11 @@
+# Some useful work specific aliases
+#
+# Dariusz Stefanski
+# 10.09.2014
+
+. ~/.bash-paths-work
+
+alias gokp="cd $KP_PATH"
+alias goworkrepo="cd $WORK_REPO_PATH"
+
+alias zim-work="zim $ZIM_NOTES_WORK_PATH"

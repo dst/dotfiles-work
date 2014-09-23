@@ -1,0 +1,5 @@
+# bashrc work specific
+
+export PATH=~/bin/work:$PATH
+
+
