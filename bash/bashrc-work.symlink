@@ -2,4 +2,5 @@
 
 export PATH=~/bin/work:$PATH
 
+. ~/.bash-aliases-work
 
