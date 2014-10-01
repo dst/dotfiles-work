@@ -26,10 +26,10 @@ function createFile {
 
     touch $file
 
-    echo "# kp ${$ym}" >> $file
+    echo "# kp ${ym}" >> $file
     echo >> $file
     today=`date +"%d.%m.%Y"`
-    echo "$today ??.??-??.??" >> $file
+    echo "$today: ??.??-??.??" >> $file
 
     git add $file
 }

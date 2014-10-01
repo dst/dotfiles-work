@@ -41,7 +41,7 @@ def str2time(str):
         return datetime.time(int(hours), int(minutes))
     except ValueError:
         print "Cannot parse time%s" % str
-        return datetime.time(0, 0) 
+        sys.exit(1)
 
 def ornament(duration):
     if duration.seconds > WORK_DAY_IN_SECS:
@@ -51,10 +51,7 @@ def ornament(duration):
     return ""
 
 def seconds2time(seconds):
-    negative = seconds < 0
-    if negative:
-        seconds = abs(seconds)
-
+    seconds = abs(seconds)
     hours = seconds / (60 * 60)
     minutes = (seconds - hours * 60 * 60) / 60
     return "%dh %dm" % (hours, minutes)
@@ -66,8 +63,8 @@ kp_file = get_kp_file()
 print "Counting hours in %s" % kp_file
 durations = get_durations(kp_file)
 
-sum = 0.0
-diff = 0.0
+sum = 0
+diff = 0
 for d in durations:
     print "%s %s" % (seconds2time(d.seconds), ornament(d))
     sum += d.seconds
