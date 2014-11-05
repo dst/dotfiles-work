@@ -1,10 +1,10 @@
 dotfiles-work
 ========
 
-= About =
+# About
 Work dotfiles.
 
-= Installation =
+# Installation
 Run script:
 $ ./install.sh
 
