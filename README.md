@@ -5,6 +5,5 @@ dotfiles-work
 Work dotfiles.
 
 # Installation
-Run script:
-$ ./install.sh
+$ bash -c "`curl -fsSL https://raw.github.com/dst/dotfiles-work/master/install.sh`"
 
