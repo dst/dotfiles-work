@@ -3,6 +3,9 @@
 # Dariusz Stefanski
 # 10.09.2014
 
+
 WORK_REPO_PATH="$HOME/work/work-repo"
-ZIM_NOTES_WORK_PATH=$WORK_REPO_PATH/zim-notes
+
+DOTFILES_WORK_PATH="$HOME/myprojects/dotfiles-work"
 KP_PATH=$WORK_REPO_PATH/kp
+ZIM_NOTES_WORK_PATH=$WORK_REPO_PATH/zim-notes
