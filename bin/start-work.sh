@@ -7,6 +7,8 @@
 . ~/.bash-functions
 . ~/.bash-paths-work
 
+start.sh
+
 echo "Starting work"
 
 kp-validate.sh
