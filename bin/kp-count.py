@@ -90,7 +90,7 @@ def main():
     durations = get_durations(kp_file)
     for day in sorted(durations):
         duration = durations[day]
-        print "%s %s" % (seconds2time(duration.seconds), ornament(duration))
+        print "%s: %s %s" % (day, seconds2time(duration.seconds), ornament(duration))
         sum += duration.seconds
         diff += (duration.seconds - WORK_DAY_IN_SECS)
     print "----------------"
