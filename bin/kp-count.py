@@ -7,13 +7,14 @@ Darek Stefanski
 
 import datetime
 import sys
+from collections import defaultdict
 
 HOUR_IN_SECS = 60 * 60
 WORK_DAY_IN_SECS = 8 * HOUR_IN_SECS
 
 
 def usage():
-   print "Usage: %s file" % sys.argv[0]
+    print "Usage: %s file" % sys.argv[0]
 
 
 def exit_with_msg(msg):
@@ -29,7 +30,7 @@ def get_kp_file():
 
 
 def get_durations(kp_file):
-    durations = []
+    durations = defaultdict(datetime.timedelta)
     f = open(kp_file)
     lines = f.readlines()
     for line in lines:
@@ -40,9 +41,10 @@ def get_durations(kp_file):
         tokens = line.split(":")
         if len(tokens) != 2:
             exit_with_msg("Incorrect line: %s" % line)
+        day = tokens[0]
         start, end = map(str2time, tokens[1].split("-"))
         duration = calculate_duration(start, end)
-        durations.append(duration)
+        durations[day] += duration
     return durations
 
 
@@ -56,7 +58,7 @@ def str2time(str):
 
 def calculate_duration(start, end):
     dummy_date = datetime.date(2000, 1, 1)
-    return datetime.datetime.combine(dummy_date,  end) - datetime.datetime.combine(dummy_date, start)
+    return datetime.datetime.combine(dummy_date, end) - datetime.datetime.combine(dummy_date, start)
 
 
 def ornament(duration):
@@ -85,13 +87,16 @@ def main():
 
     sum = 0
     diff = 0
-    for d in get_durations(kp_file):
-        print "%s %s" % (seconds2time(d.seconds), ornament(d))
-        sum += d.seconds
-        diff += (d.seconds - WORK_DAY_IN_SECS)
+    durations = get_durations(kp_file)
+    for day in sorted(durations):
+        duration = durations[day]
+        print "%s %s" % (seconds2time(duration.seconds), ornament(duration))
+        sum += duration.seconds
+        diff += (duration.seconds - WORK_DAY_IN_SECS)
     print "----------------"
     print "TOTAL: %s" % seconds2time(sum)
     print "%s diff: %s" % (diff_prefix(diff), seconds2time(diff))
+
 
 if __name__ == "__main__":
     main()
