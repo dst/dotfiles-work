@@ -6,24 +6,27 @@ Darek Stefanski
 """
 
 import datetime
-import os
 import sys
 
 HOUR_IN_SECS = 60 * 60
 WORK_DAY_IN_SECS = 8 * HOUR_IN_SECS
 
+
 def usage():
    print "Usage: %s file" % sys.argv[0]
+
 
 def exit_with_msg(msg):
     print msg
     sys.exit(1)
+
 
 def get_kp_file():
     if len(sys.argv) != 2:
         usage()
         sys.exit(1)
     return sys.argv[1]
+
 
 def get_durations(kp_file):
     durations = []
@@ -38,10 +41,10 @@ def get_durations(kp_file):
         if len(tokens) != 2:
             exit_with_msg("Incorrect line: %s" % line)
         start, end = map(str2time, tokens[1].split("-"))
-        dummydate = datetime.date(2000,1,1)
         duration = calculate_duration(start, end)
         durations.append(duration)
     return durations
+
 
 def str2time(str):
     try:
@@ -50,9 +53,11 @@ def str2time(str):
     except ValueError:
         exit_with_msg("Cannot parse time%s" % str)
 
+
 def calculate_duration(start, end):
-    dummydate = datetime.date(2000,1,1)
-    return datetime.datetime.combine(dummydate,  end) - datetime.datetime.combine(dummydate, start)
+    dummy_date = datetime.date(2000, 1, 1)
+    return datetime.datetime.combine(dummy_date,  end) - datetime.datetime.combine(dummy_date, start)
+
 
 def ornament(duration):
     if duration.seconds > WORK_DAY_IN_SECS:
@@ -62,14 +67,17 @@ def ornament(duration):
     else:
         return ""
 
+
 def seconds2time(seconds):
     seconds = abs(seconds)
     hours = seconds / HOUR_IN_SECS
     minutes = (seconds - hours * HOUR_IN_SECS) / 60
     return "%dh %dm" % (hours, minutes)
 
+
 def diff_prefix(diff):
     return "positive" if diff >= 0 else "negative"
+
 
 def main():
     kp_file = get_kp_file()
