@@ -89,7 +89,7 @@ def ornament(duration, work_day_in_secs):
 
 def seconds2time(seconds):
     seconds = abs(seconds)
-    hours = seconds / HOUR_IN_SECS
+    hours = int(seconds / HOUR_IN_SECS)
     minutes = (seconds - hours * HOUR_IN_SECS) / 60
     return "%dh %dm" % (hours, minutes)
 
