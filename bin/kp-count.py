@@ -5,12 +5,16 @@ Counts hours in specified kp file
 Darek Stefanski
 """
 
+import ConfigParser
 import datetime
+import os
 import sys
 from collections import defaultdict
 
+
+DEFAULT_WORK_WEEK_HOURS = 40
 HOUR_IN_SECS = 60 * 60
-WORK_DAY_IN_SECS = 8 * HOUR_IN_SECS
+KP_CONFIG_FILE = os.path.expanduser('~/.kp.cfg')
 
 
 def usage():
@@ -27,6 +31,19 @@ def get_kp_file():
         usage()
         sys.exit(1)
     return sys.argv[1]
+
+
+def get_work_week_hours():
+    if os.path.exists(KP_CONFIG_FILE):
+        config = ConfigParser.ConfigParser()
+        config.read(KP_CONFIG_FILE)
+        return config.getint('KP', 'work-week-hours')
+    else:
+        return DEFAULT_WORK_WEEK_HOURS
+
+
+def get_work_day_in_secs():
+    return get_work_week_hours() / 5. * HOUR_IN_SECS
 
 
 def get_durations(kp_file):
@@ -61,10 +78,10 @@ def calculate_duration(start, end):
     return datetime.datetime.combine(dummy_date, end) - datetime.datetime.combine(dummy_date, start)
 
 
-def ornament(duration):
-    if duration.seconds > WORK_DAY_IN_SECS:
+def ornament(duration, work_day_in_secs):
+    if duration.seconds > work_day_in_secs:
         return "+"
-    elif duration.seconds < WORK_DAY_IN_SECS:
+    elif duration.seconds < work_day_in_secs:
         return "-"
     else:
         return ""
@@ -83,16 +100,17 @@ def diff_prefix(diff):
 
 def main():
     kp_file = get_kp_file()
-    print "Counting hours in %s" % kp_file
+    print "Counting hours in %s with work week of %d hours" % (kp_file, get_work_week_hours())
 
     sum = 0
     diff = 0
+    work_day_in_secs = get_work_day_in_secs()
     durations = get_durations(kp_file)
     for day in sorted(durations):
         duration = durations[day]
-        print "%s: %s %s" % (day, seconds2time(duration.seconds), ornament(duration))
+        print "%s: %s %s" % (day, seconds2time(duration.seconds), ornament(duration, work_day_in_secs))
         sum += duration.seconds
-        diff += (duration.seconds - WORK_DAY_IN_SECS)
+        diff += (duration.seconds - work_day_in_secs)
     print "----------------"
     print "TOTAL: %s" % seconds2time(sum)
     print "%s diff: %s" % (diff_prefix(diff), seconds2time(diff))
