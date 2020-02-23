@@ -38,4 +38,4 @@ cd $KP_PATH
 ym=`date +"%Y.%m"`
 createFiles
 files=`ls ${ym}* | grep -v "~"`
-startProgram kate $files
+startProgram subl $files
